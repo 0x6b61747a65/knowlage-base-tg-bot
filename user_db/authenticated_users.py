@@ -8,8 +8,11 @@ dbpassword=os.getenv('DB_PASSWORD')
 hostname=os.getenv('HOSTNAME')
 
 
-conn = psycopg2.connect(dbname=dbname, user=username, password=dbpassword, host=hostname)
+conn = psycopg2.connect(dbname=dbname, user=username, password=dbpassword, host='localhost')
 
-
+#testing connection to db
+cur = conn.cursor()
+cur.execute('select * from users')
+print(cur.fetchall())
 
 conn.close()
