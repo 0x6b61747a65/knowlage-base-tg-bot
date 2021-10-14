@@ -1,4 +1,5 @@
 import os
+from aiogram.dispatcher.storage import RESULT
 import psycopg2
 
 
@@ -9,10 +10,20 @@ hostname=os.getenv('HOSTNAME')
 
 
 conn = psycopg2.connect(dbname=dbname, user=username, password=dbpassword, host='localhost')
+cur = conn.cursor()
+
+def username_in_db_exists(username):
+    cur.execute(
+        "select username from users where username =%s", (username,)
+    )
+    result = cur.fetchone()
+    if result is None:
+        result = '0'
+    else:
+        result = result[0]
+    return result
 
 #testing connection to db
-cur = conn.cursor()
-cur.execute('select * from users')
-print(cur.fetchall())
-
-conn.close()
+# cur.execute('select * from users')
+# username = input('Username: ')
+# print(username_in_db_exists(username))
